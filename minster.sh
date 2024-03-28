@@ -86,11 +86,11 @@ EOS
 
 play_midi() {
     if [[ "$instrument" == "tubular" ]]; then
-        "$timidity_path" --volume "$volume_factor" "$midi_dir/$1.midi" \
+        "$timidity_path" -OO --volume "$volume_factor" "$midi_dir/$1.midi" \
             > /dev/null 2>/dev/null
     else
         xxd -g1 "$midi_dir/$1.midi" | sed "s/0e/$instrument_code/" \
-            | xxd -r | "$timidity_path" --volume "$volume_factor" - \
+            | xxd -r | "$timidity_path" -OO --volume "$volume_factor" - \
             > /dev/null 2>/dev/null
     fi
 }
