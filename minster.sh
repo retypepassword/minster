@@ -86,11 +86,11 @@ EOS
 
 play_midi() {
     if [[ "$instrument" == "tubular" ]]; then
-        "$timidity_path" -OO --volume "$volume_factor" "$midi_dir/$1.midi" \
+        "$timidity_path" -OO -T 60 --volume "$volume_factor" "$midi_dir/$1.midi" \
             > /dev/null 2>/dev/null
     else
         xxd -g1 "$midi_dir/$1.midi" | sed "s/0e/$instrument_code/" \
-            | xxd -r | "$timidity_path" -OO --volume "$volume_factor" - \
+            | xxd -r | "$timidity_path" -OO -T 60 --volume "$volume_factor" - \
             > /dev/null 2>/dev/null
     fi
 }
@@ -102,7 +102,7 @@ chime_part() {
 chime_parts() {
     for n in "$@"; do
         chime_part $n &
-        sleep 3
+        sleep 5.7
     done
 }
 
@@ -118,12 +118,12 @@ chime_quarter() {
 }
 
 strike_hour() {
-    [[ -n "$the_quarter" ]] && sleep 2
+    [[ -n "$the_quarter" ]] && sleep 4
     say "striking hour $1"
     count=$1
     while [[ "$count" -gt 0 ]]; do
         play_midi "hour" &
-        sleep 2
+        sleep 4
         ((count--))
     done
 }
